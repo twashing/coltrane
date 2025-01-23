@@ -22,12 +22,12 @@
   (list
 
    (service home-gpg-agent-service-type
-             (home-gpg-agent-configuration
+            (home-gpg-agent-configuration
 
-              ;; Point to the Emacs-based pinentry program
-              (pinentry-program
-               (file-append pinentry "/bin/pinentry-curses"))
-              (ssh-support? #t)))
+             ;; Point to the Emacs-based pinentry program
+             (pinentry-program
+              (file-append pinentry "/bin/pinentry-curses"))
+             (ssh-support? #t)))
 
    ;; (service home-gpg-agent-service-type
    ;;       (home-gpg-agent-configuration

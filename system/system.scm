@@ -5,6 +5,7 @@
              (guix profiles)
              (guix packages)
              (guix scripts package)
+             (ice-9 binary-ports)
              (miles packages fonts))
 
 (use-service-modules
@@ -72,24 +73,73 @@
      %base-packages))
    (services
     (append
-     (list (service gnome-desktop-service-type)
-           (service xfce-desktop-service-type)
-           (service openssh-service-type)
-           (service tor-service-type)
-           (set-xorg-configuration
-            (xorg-configuration
-             (keyboard-layout keyboard-layout)))
-           (service containerd-service-type
-              (containerd-configuration
+     (list
+
+      ;; (service guix-service-type
+      ;;          (guix-configuration
+      ;;           (inherit (guix-configuration))
+      ;;           (authorized-keys
+      ;;            (cons* (local-file "/home/twashing/default-public-key.asc")
+      ;;                   (guix-configuration-authorized-keys (guix-configuration)))))
+      ;; 
+      ;;          ;; (guix-configuration
+      ;;          ;;  (authorized-keys
+      ;;          ;;   (list (local-file "/home/twashing/default-public-key.asc"))))
+      ;;          )
+      
+      (service gnome-desktop-service-type)
+      (service xfce-desktop-service-type)
+      (service openssh-service-type)
+      (service tor-service-type)
+      (set-xorg-configuration
+       (xorg-configuration
+        (keyboard-layout keyboard-layout)))
+      (service containerd-service-type
+               (containerd-configuration
                 ;; You can specify additional configuration here if needed
                 ))
-           (service docker-service-type
-                    (docker-configuration
-                     (debug? #t)                     ; Enable debug logging (optional)
-                     ;; (hosts '("unix:///var/run/docker.sock"))  ; Specify the socket
-                     ;; Add more configuration options as needed
-                     )))
-     %desktop-services))
+      (service docker-service-type
+               (docker-configuration
+                (debug? #t)                     ; Enable debug logging (optional)
+                ;; (hosts '("unix:///var/run/docker.sock"))  ; Specify the socket
+                ;; Add more configuration options as needed
+                )))
+     ;; %desktop-services
+     (modify-services %desktop-services
+                      (guix-service-type config =>
+                                         (guix-configuration
+                                          (inherit config)
+
+                                          ;; (authorized-keys
+                                          ;;  (cons* (local-file "/home/twashing/default-public-key.gpg")
+                                          ;;         (guix-configuration-authorized-keys config)))
+
+                                          ;; (authorized-keys
+                                          ;;  (cons* (plain-file "default-public-key.gpg"
+                                          ;;                     (call-with-input-file 
+                                          ;;                         "/home/twashing/default-public-key.gpg"
+                                          ;;                       get-bytevector-all))
+                                          ;;         (guix-configuration-authorized-keys config)))
+
+                                          ;; (authorized-keys
+                                          ;;  (cons* "/home/twashing/default-public-key.gpg"
+                                          ;;         (guix-configuration-authorized-keys config)))
+
+                                          ;; (authorized-keys
+                                          ;;  (cons
+                                          ;;   (computed-file "default-public-key.gpg"
+                                          ;;                  #~(begin
+                                          ;;                      (use-modules (ice-9 binary-ports))
+                                          ;;                      (define content
+                                          ;;                        (call-with-input-file
+                                          ;;                            "/home/twashing/default-public-key.gpg"
+                                          ;;                          get-bytevector-all))
+                                          ;;                      (call-with-output-file #$output
+                                          ;;                        (lambda (port)
+                                          ;;                          (put-bytevector port content)))))
+                                          ;;   (guix-configuration-authorized-keys config)))
+                                          )))
+     ))
    (bootloader
     (bootloader-configuration
      (bootloader grub-efi-bootloader)
