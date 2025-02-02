@@ -43,7 +43,15 @@
             "stow"
             "zip" "unzip"
             "wget" "curl"
-            "fzf"
+
+            ;; NOTE
+            ;; https://github.com/junegunn/fzf
+            ;; https://junegunn.github.io/fzf
+            ;; https://www.youtube.com/watch?v=oTNRvnQLLLs
+
+            ;; TODO
+            ;; configure terminal colors with fzf output (in Ghostty)
+            "fzf" "bat"
             "fd"
             "python-tldr"
             "zoxide"
