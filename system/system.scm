@@ -36,6 +36,7 @@
     (append
      (map specification->package
           '("gcc-toolchain"
+
             "make"
             "git"
             "emacs" "vim"
@@ -43,6 +44,18 @@
             "stow"
             "zip" "unzip"
             "wget" "curl"
+
+            "zsh"
+            "zsh-syntax-highlighting"
+            "zsh-completions"
+            "zsh-autosuggestions"
+            "fzf-tab"              ;; Replace the zsh default completion menu with fzf
+            "zsh-autopair"
+            "zsh-history-substring-search"
+
+            "tmux@3.5a"
+            "nerd-dictation@0-1.0eb44b7"
+            "ibus-speech-to-text"
 
             ;; NOTE
             ;; https://github.com/junegunn/fzf
@@ -55,6 +68,9 @@
             "fd"
             "python-tldr"
             "zoxide"
+            "eza"
+            "ffmpeg"
+            "imagemagik"
 
             "the-silver-searcher"
             "ripgrep"
